@@ -17,7 +17,7 @@ const Sidebar = ({
 
   return (
     <Drawer
-      anchor="right"
+      anchor="left"
       // variant="persistent"
       open={isDrawerOpen}
       onClose={() => handleDrawerToggle(false)}
@@ -46,6 +46,7 @@ const Sidebar = ({
               right: "1.5rem",
               color: "secondary.main",
             }}
+            size="small"
             onClick={() => handleDrawerToggle(false)}
           >
             <CloseIcon sx={{ fontSize: "2rem" }} />

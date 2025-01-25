@@ -12,23 +12,23 @@ const lightTheme = createTheme({
     },
   },
   colorSchemes: {
-    dark: true,
+    dark: false,
   },
   palette: {
-    mode: "dark",
+    mode: "light",
     primary: {
-      main: "#e5e9ed",
+      main: "#1DC497",
       light: "#ffffffcc",
     },
     background: {
-      default: "#e5e9ed",
+      default: "whitesmoke",
     },
     secondary: {
       main: "#ff3d54",
       light: "#ffe4e7",
     },
     text: {
-      primary: "#011d43",
+      primary: "#1DC497",
       secondary: "#021d44cc",
     },
   },
@@ -51,11 +51,11 @@ const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#011d43",
+      main: "#1DC497",
       light: "#021d44cc",
     },
     background: {
-      default: "#011d43",
+      default: "#1DC497",
     },
     secondary: {
       main: "#ff3d54",

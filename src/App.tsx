@@ -1,12 +1,13 @@
-// import { io } from "socket.io-client";
-
+import { Provider } from "react-redux";
 import Layout from "./components/Layout";
+import { store } from "./redux/store";
 
-// const socket = io(import.meta.env.VITE_SERVER_URL, { withCredentials: true });
 function App() {
   return (
     <>
-      <Layout />
+      <Provider store={store}>
+        <Layout />
+      </Provider>
     </>
   );
 }

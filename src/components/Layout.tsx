@@ -1,21 +1,90 @@
 import { ThemeProvider } from "@mui/material/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter, Route, Routes } from "react-router";
 
-import { Box, Container, CssBaseline } from "@mui/material";
+import { Box, Container, CssBaseline, Toolbar } from "@mui/material";
 
+import { useDispatch, useSelector } from "react-redux";
+import SocketManager from "../config/socketConfig";
 import { Mode } from "../constants/types";
 import "../index.css";
+import {
+  setCurrentUser,
+  setIsRevalidateCurrentUserUtil,
+  setIsSocketConnected,
+  setIsUserAuthLoading,
+} from "../redux/slices/userSlice";
+import { RootState } from "../redux/store";
+import { UserInterface } from "../types";
 import { darkTheme, lightTheme } from "../utils/theme";
+import ErrorComponent from "./global/Error";
 import Footer from "./global/Footer";
 import Header from "./global/Header";
-import Sidebar from "./global/Sidebar";
-import Home from "./Home";
+import Loading from "./global/Loading";
+import Home from "./pageElements/home/Home";
+import Messages from "./pageElements/messages/Messages";
 
 function Layout() {
-  const [mode, setMode] = useState<Mode>("dark");
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [mode, setMode] = useState<Mode>("light");
+  const {
+    isSocketConnected,
+    isUserAuthLoading,
+    currentUser,
+    revalidateCurrentUserUtil,
+  } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/auth`, {
+        credentials: "include",
+      });
+      const data: { status: boolean; data: UserInterface; message: string } =
+        await res.json();
+      if (!data.status) {
+        throw new Error(data.message);
+      }
+      dispatch(setCurrentUser({ data: data.data }));
+    };
+    try {
+      dispatch(setIsUserAuthLoading(true));
+      fetchCurrentUser();
+    } catch (e) {
+      let message = "Some Error Occured";
+      if (e instanceof Error) {
+        message = e.message;
+      }
+      console.log(message);
+      dispatch(setCurrentUser({ data: null }));
+    } finally {
+      dispatch(setIsUserAuthLoading(false));
+    }
+  }, [isSocketConnected, dispatch, revalidateCurrentUserUtil]);
+
+  // socket connector
+  useEffect(() => {
+    const socket = SocketManager.getInstance();
+    try {
+      socket.on("connect", () => {
+        dispatch(setIsSocketConnected(true));
+      });
+      socket.on("messageAlert", () => {
+        console.log("message alert");
+        dispatch(setIsRevalidateCurrentUserUtil(!revalidateCurrentUserUtil));
+      });
+    } catch (e) {
+      let message = "Some Error Occured";
+      if (e instanceof Error) {
+        message = e.message;
+      }
+      alert(message);
+    }
+
+    return () => {
+      SocketManager.disconnectInstance();
+    };
+  }, []);
 
   return (
     <React.Fragment>
@@ -51,32 +120,39 @@ function Layout() {
       <ThemeProvider theme={mode === "dark" ? darkTheme : lightTheme}>
         <CssBaseline />
         <BrowserRouter>
-          <Header
-            mode={mode}
-            setMode={setMode}
-            isDrawerOpen={isDrawerOpen}
-            setIsDrawerOpen={setIsDrawerOpen}
-          />
-          <Sidebar
-            isDrawerOpen={isDrawerOpen}
-            setIsDrawerOpen={setIsDrawerOpen}
-          />
-          <Box sx={{ bgcolor: "background.default" }}>
-            <Container
-              maxWidth="lg"
-              sx={{
-                bgcolor: "primary.main",
-                minHeight: "calc(100vh - 102px)",
-                mt: "102px",
-                pt: { xs: "3rem", sm: "8rem" },
-              }}
-            >
-              <Routes>
-                <Route path="/" element={<Home />} />
-              </Routes>
-            </Container>
-          </Box>
-          <Footer />
+          {isUserAuthLoading ? (
+            <Loading />
+          ) : (
+            <>
+              {!currentUser ? (
+                <ErrorComponent />
+              ) : (
+                <>
+                  <Header mode={mode} setMode={setMode} />
+                  <Toolbar sx={{ margin: ".5rem" }} />
+                  <Box sx={{ bgcolor: "whitesmoke" }}>
+                    <Container
+                      maxWidth="sm"
+                      sx={{
+                        bgcolor: "whitesmoke",
+                        height: "calc(100vh - 102px)",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "stretch",
+                        padding: "0 !important",
+                      }}
+                    >
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/:userId" element={<Messages />} />
+                      </Routes>
+                    </Container>
+                  </Box>
+                  <Footer />
+                </>
+              )}
+            </>
+          )}
         </BrowserRouter>
       </ThemeProvider>
     </React.Fragment>
