@@ -1,5 +1,4 @@
 import { ArrowBack } from "@mui/icons-material";
-import DeblurIcon from "@mui/icons-material/Deblur";
 import {
   AppBar,
   Container,
@@ -11,20 +10,10 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router";
-import { navLinks } from "../../constants/data";
-import { Mode } from "../../constants/types";
 import { RootState } from "../../redux/store";
+import SocketConnectIcon from "./SocketConnectIcon";
 
-const Header = ({
-  mode,
-  setMode,
-}: {
-  mode: Mode;
-  setMode: React.Dispatch<React.SetStateAction<Mode>>;
-}) => {
-  const handleDarkModeToggle = () => {
-    setMode(mode === "dark" ? "light" : "dark");
-  };
+const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { chatUser } = useSelector((state: RootState) => state.user);
@@ -72,51 +61,7 @@ const Header = ({
                   Chatly
                 </Typography>
               </Stack>
-              <Stack
-                direction={"row"}
-                gap={"2rem"}
-                alignItems={"center"}
-                sx={{ display: { xs: "none", sm: "flex" } }}
-              >
-                {navLinks.map((item) => {
-                  const { route, title } = item;
-                  return (
-                    <Typography
-                      key={route}
-                      variant="h6"
-                      component={Link}
-                      to={`${route}`}
-                      sx={{ textDecoration: "none", color: "text.primary" }}
-                    >
-                      {title}
-                    </Typography>
-                  );
-                })}
-
-                {/* <Link to={"/about"}>About</Link> */}
-                <Stack direction={"row"} alignItems={"center"}>
-                  <IconButton
-                    size="large"
-                    onClick={() => handleDarkModeToggle()}
-                    sx={{ color: "text.primary" }}
-                  >
-                    <DeblurIcon sx={{ fontSize: "2rem" }} />
-                  </IconButton>
-                </Stack>
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                sx={{ display: { sm: "none" } }}
-              >
-                <IconButton
-                  size="large"
-                  onClick={() => handleDarkModeToggle()}
-                  sx={{ color: "primary.light" }}
-                >
-                  <DeblurIcon sx={{ fontSize: "2rem" }} />
-                </IconButton>
-              </Stack>
+              <SocketConnectIcon />
             </Container>
           </Toolbar>
         </AppBar>
@@ -146,20 +91,29 @@ const Header = ({
                 // maxWidth: "1280px",
               }}
             >
-              <Stack flexDirection={"row"} gap={".5rem"} alignItems={"center"}>
-                <IconButton
-                  onClick={() => navigate("/")}
-                  sx={{ color: "whitesmoke" }}
-                >
-                  <ArrowBack />
-                </IconButton>
-                <Typography
-                  variant="h6"
-                  color="whitesmoke"
-                  textTransform={"capitalize"}
-                >
-                  {chatUser?.name || "Start a Conversation"}
-                </Typography>
+              <Stack
+                flexDirection={"row"}
+                gap={".5rem"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                width={"100%"}
+              >
+                <Stack flexDirection={"row"} alignItems={"center"}>
+                  <IconButton
+                    onClick={() => navigate("/")}
+                    sx={{ color: "whitesmoke" }}
+                  >
+                    <ArrowBack />
+                  </IconButton>
+                  <Typography
+                    variant="h6"
+                    color="whitesmoke"
+                    textTransform={"capitalize"}
+                  >
+                    {chatUser?.name || "Start a Conversation"}
+                  </Typography>
+                </Stack>
+                <SocketConnectIcon />
               </Stack>
             </Container>
           </Toolbar>

@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@mui/material/styles";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter, Route, Routes } from "react-router";
 
@@ -7,7 +7,6 @@ import { Box, Container, CssBaseline, Toolbar } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
 import SocketManager from "../config/socketConfig";
-import { Mode } from "../constants/types";
 import "../index.css";
 import {
   setCurrentUser,
@@ -17,7 +16,7 @@ import {
 } from "../redux/slices/userSlice";
 import { RootState } from "../redux/store";
 import { UserInterface } from "../types";
-import { darkTheme, lightTheme } from "../utils/theme";
+import { lightTheme } from "../utils/theme";
 import ErrorComponent from "./global/Error";
 import Footer from "./global/Footer";
 import Header from "./global/Header";
@@ -26,7 +25,6 @@ import Home from "./pageElements/home/Home";
 import Messages from "./pageElements/messages/Messages";
 
 function Layout() {
-  const [mode, setMode] = useState<Mode>("light");
   const {
     isSocketConnected,
     isUserAuthLoading,
@@ -118,7 +116,7 @@ function Layout() {
           content="https://example.com/twitter-image.jpg"
         />
       </Helmet>
-      <ThemeProvider theme={mode === "dark" ? darkTheme : lightTheme}>
+      <ThemeProvider theme={lightTheme}>
         <CssBaseline />
         <BrowserRouter>
           {isUserAuthLoading ? (
@@ -129,7 +127,7 @@ function Layout() {
                 <ErrorComponent />
               ) : (
                 <>
-                  <Header mode={mode} setMode={setMode} />
+                  <Header />
                   <Toolbar sx={{ margin: ".5rem" }} />
                   <Box sx={{ bgcolor: "whitesmoke" }}>
                     <Container
