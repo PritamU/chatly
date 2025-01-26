@@ -19,11 +19,10 @@ import {
 } from "../../../redux/slices/userSlice";
 import { RootState } from "../../../redux/store";
 import { UserInterface } from "../../../types";
+import NoData from "./NoData";
 
 const ActiveUsers = () => {
-  const { users, currentUser, revalidateCurrentUserUtil } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { users, currentUser } = useSelector((state: RootState) => state.user);
   const [cookies] = useCookies();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +33,7 @@ const ActiveUsers = () => {
       socket.on("users", (data: UserInterface[]) => {
         console.log("users", data);
         dispatch(setUsers({ data, cookie: cookies["user.sid"] }));
-        dispatch(setIsRevalidateCurrentUserUtil(!revalidateCurrentUserUtil));
+        dispatch(setIsRevalidateCurrentUserUtil());
       });
     } catch (e) {
       let message = "Some Error Occured";
@@ -55,7 +54,7 @@ const ActiveUsers = () => {
       }}
     >
       {users.length === 0 ? (
-        <h1>Not Found</h1>
+        <NoData />
       ) : (
         <List>
           {users.map((user, index) => {

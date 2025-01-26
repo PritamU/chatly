@@ -9,7 +9,7 @@ export interface UserSliceInterface {
   isSocketConnected: boolean;
   isUserAuthLoading: boolean;
   isChatUserLoading: boolean;
-  revalidateCurrentUserUtil: boolean;
+  revalidateCurrentUserUtil: number;
 }
 
 const initialState: UserSliceInterface = {
@@ -19,7 +19,7 @@ const initialState: UserSliceInterface = {
   isSocketConnected: false,
   isChatUserLoading: false,
   isUserAuthLoading: false,
-  revalidateCurrentUserUtil: false,
+  revalidateCurrentUserUtil: 0,
 };
 
 export const userSlice = createSlice({
@@ -62,8 +62,8 @@ export const userSlice = createSlice({
     setIsChatUserLoading: (state, action: PayloadAction<boolean>) => {
       state.isChatUserLoading = action.payload;
     },
-    setIsRevalidateCurrentUserUtil: (state, action: PayloadAction<boolean>) => {
-      state.revalidateCurrentUserUtil = action.payload;
+    setIsRevalidateCurrentUserUtil: (state) => {
+      state.revalidateCurrentUserUtil = state.revalidateCurrentUserUtil + 1;
     },
   },
 });

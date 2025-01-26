@@ -67,11 +67,11 @@ function Layout() {
     const socket = SocketManager.getInstance();
     try {
       socket.on("connect", () => {
+        console.log("socket connected");
         dispatch(setIsSocketConnected(true));
       });
       socket.on("messageAlert", () => {
-        console.log("message alert");
-        dispatch(setIsRevalidateCurrentUserUtil(!revalidateCurrentUserUtil));
+        dispatch(setIsRevalidateCurrentUserUtil());
       });
     } catch (e) {
       let message = "Some Error Occured";
@@ -82,6 +82,7 @@ function Layout() {
     }
 
     return () => {
+      console.log("socket disconnect");
       SocketManager.disconnectInstance();
     };
   }, []);
