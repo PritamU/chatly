@@ -1,8 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
-import { useNavigate } from "react-router";
 
 const ErrorComponent = () => {
-  const navigate = useNavigate();
   return (
     <Stack
       sx={{
