@@ -88,32 +88,26 @@ function Layout() {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Pritam Upadhya</title>
-        <meta
-          name="description"
-          content="Hi I’m Pritam Upadhya, a Full Stack developer based in Guwahati, India."
-        />
+        <title>Chatly</title>
+        <meta name="description" content="Chat With Anonymous Users." />
 
         {/* Open Graph Tags */}
-        <meta property="og:title" content="Pritam Upadhya" />
+        <meta property="og:title" content="Chatly" />
+        <meta property="og:description" content="Chat With Anonymous Users." />
         <meta
-          property="og:description"
-          content="Hi I’m Pritam Upadhya, a Full Stack developer based in Guwahati, India."
+          property="og:image"
+          content="https://chatly.pritamupadhya.site/images/chatly-logo.png"
         />
-        <meta property="og:image" content="https://example.com/og-image.jpg" />
-        <meta property="og:url" content="https://example.com/" />
+        <meta property="og:url" content="https://chatly.pritamupadhya.site" />
         <meta property="og:type" content="website" />
 
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Pritam Upadhya" />
-        <meta
-          name="twitter:description"
-          content="Hi I’m Pritam Upadhya, a Full Stack developer based in Guwahati, India."
-        />
+        <meta name="twitter:title" content="Chatly" />
+        <meta name="twitter:description" content="Chat With Anonymous Users." />
         <meta
           name="twitter:image"
-          content="https://example.com/twitter-image.jpg"
+          content="https://chatly.pritamupadhya.site/images/chatly-logo.png"
         />
       </Helmet>
       <ThemeProvider theme={lightTheme}>
