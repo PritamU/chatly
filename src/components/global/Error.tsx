@@ -17,7 +17,13 @@ const ErrorComponent = () => {
         <Typography variant="body1" color="red">
           Oops! Some Error Occured.
         </Typography>
-        <Button variant="contained" color="info" onClick={() => navigate("/")}>
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() => {
+            window.location.replace("/");
+          }}
+        >
           Go Back Home
         </Button>
       </Stack>
