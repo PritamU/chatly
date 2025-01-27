@@ -174,11 +174,12 @@ const Messages = () => {
       {/* textbox for message */}
       <Stack
         sx={{
-          position: "absolute",
+          position: { xs: "fixed", sm: "absolute" },
           bottom: 0,
           left: 0,
           width: "100%",
           bgcolor: "transparent",
+          p: "0 .5rem",
         }}
       >
         <TextField
