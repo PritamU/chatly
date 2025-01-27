@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { RootState } from "../../redux/store";
 import SocketConnectIcon from "./SocketConnectIcon";
 
@@ -31,14 +31,12 @@ const Header = () => {
           <Toolbar
             sx={{
               bgcolor: "primary.main",
-              p: 0,
               width: "100%",
               maxWidth: "600px",
             }}
           >
             <Container
               sx={{
-                p: "0 1rem",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -52,14 +50,12 @@ const Header = () => {
                 justifyContent={"flex-start"}
                 gap=".5rem"
               >
-                <Typography
-                  sx={{ textDecoration: "none", color: "primary.light" }}
-                  variant="body1"
-                  component={Link}
-                  to={"/"}
-                >
-                  Chatly
-                </Typography>
+                <img
+                  src="/chatly-logo.png"
+                  alt="Chatly"
+                  height={30}
+                  width={150}
+                />
               </Stack>
               <SocketConnectIcon />
             </Container>
